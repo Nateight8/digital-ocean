@@ -14,7 +14,6 @@ import {
   AuthCredentialsValidator,
   TAuthCredentialsValidator,
 } from "@/lib/validators/account-credentials-validator";
-// import { trpc } from '@/trpc/client'
 import { toast } from "sonner";
 import { ZodError } from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -42,8 +41,30 @@ const Page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
-  // const { mutate: signIn, isLoading } = trpc.auth.signIn.useMutation();
-  const { mutate: signIn, isLoading } = trpc.auth.signIn.useMutation();
+  const { mutate: signIn, isLoading } = trpc.auth.signIn.useMutation({
+    onSuccess: async () => {
+      toast.success("Signed in successfully");
+
+      router.refresh();
+
+      if (origin) {
+        router.push(`/${origin}`);
+        return;
+      }
+
+      if (isSeller) {
+        router.push("/sell");
+        return;
+      }
+
+      router.push("/");
+    },
+    onError: (err) => {
+      if (err.data?.code === "UNAUTHORIZED") {
+        toast.error("Invalid email or password.");
+      }
+    },
+  });
   const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
     signIn({ email, password });
   };
