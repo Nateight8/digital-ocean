@@ -42,31 +42,8 @@ const Page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
-  const { mutate: signIn, isLoading } = trpc.auth.signIn.useMutation({
-    onSuccess: async () => {
-      toast.success("Signed in successfully");
-
-      router.refresh();
-
-      if (origin) {
-        router.push(`/${origin}`);
-        return;
-      }
-
-      if (isSeller) {
-        router.push("/sell");
-        return;
-      }
-
-      router.push("/");
-    },
-    onError: (err) => {
-      if (err.data?.code === "UNAUTHORIZED") {
-        toast.error("Invalid email or password.");
-      }
-    },
-  });
-
+  // const { mutate: signIn, isLoading } = trpc.auth.signIn.useMutation();
+  const { mutate: signIn, isLoading } = trpc.auth.signIn.useMutation();
   const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
     signIn({ email, password });
   };
@@ -129,12 +106,12 @@ const Page = () => {
                   )}
                 </div>
 
-                {/* <Button disabled={isLoading}>
+                <Button disabled={isLoading}>
                   {isLoading && (
-                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   Sign in
-                </Button> */}
+                </Button>
               </div>
             </form>
 
@@ -152,21 +129,23 @@ const Page = () => {
               </div>
             </div>
 
-            {/* {isSeller ? (
+            {isSeller ? (
               <Button
                 onClick={continueAsBuyer}
-                variant='secondary'
-                disabled={isLoading}>
+                variant="secondary"
+                disabled={isLoading}
+              >
                 Continue as customer
               </Button>
             ) : (
               <Button
                 onClick={continueAsSeller}
-                variant='secondary'
-                disabled={isLoading}>
+                variant="secondary"
+                disabled={isLoading}
+              >
                 Continue as seller
               </Button>
-            )} */}
+            )}
           </div>
         </div>
       </div>

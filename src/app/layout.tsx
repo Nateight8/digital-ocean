@@ -29,7 +29,7 @@ export default function RootLayout({
           </Providers>
         </main>
 
-        <Toaster position="top-center" richColors />
+        <Toaster />
       </body>
     </html>
   );
