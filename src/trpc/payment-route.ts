@@ -12,6 +12,8 @@ export const paymentRouter = router({
       const { user } = ctx;
       let { productIds } = input;
 
+      console.log(productIds);
+
       if (productIds.length === 0) {
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
@@ -48,13 +50,12 @@ export const paymentRouter = router({
       });
 
       line_items.push({
-        price: "price_1OCeBwA19umTXGu8s4p2G3aX",
+        price: "price_1OTZx8EUFgEd32PUhx14dS5g",
         quantity: 1,
         adjustable_quantity: {
           enabled: false,
         },
       });
-
       try {
         const stripeSession = await stripe.checkout.sessions.create({
           success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
@@ -73,6 +74,7 @@ export const paymentRouter = router({
         return { url: null };
       }
     }),
+
   pollOrderStatus: privateProcedure
     .input(z.object({ orderId: z.string() }))
     .query(async ({ input }) => {

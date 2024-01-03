@@ -83,11 +83,11 @@ export const Products: CollectionConfig = {
   admin: {
     useAsTitle: "name",
   },
-  access: {
-    // read: isAdminOrHasAccess(),
-    // update: isAdminOrHasAccess(),
-    // delete: isAdminOrHasAccess(),
-  },
+  // access: {
+  //   read: isAdminOrHasAccess(),
+  //   update: isAdminOrHasAccess(),
+  //   delete: isAdminOrHasAccess(),
+  // },
   hooks: {
     //   afterChange: [syncUser],
     beforeChange: [
